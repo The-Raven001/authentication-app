@@ -79,7 +79,7 @@ def login():
 def private():
 
     try:
-        return jsonify({"message": "Authenticated successfully!"})
+        return jsonify({"message": "Authenticated successfully!"}), 200
     except Exception as error:
         return jsonify({"error": f"{error}"}), 500
 

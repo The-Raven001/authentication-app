@@ -59,6 +59,38 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Login error:", error);
         }
       },
+
+      validateToken: async () => {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            `${process.env.BACKEND_URL}/api/private`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          if (response.ok) {
+            setStore({ token: token });
+            return true;
+          } else {
+            localStorage.removeItem("token");
+            return;
+          }
+        } catch (error) {
+          console.error("Error validating token:", error);
+          localStorage.removeItem("token");
+          return;
+        }
+      },
     },
   };
 };
